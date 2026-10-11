@@ -1,10 +1,16 @@
 #include <cstdint>
 #include <cmath>
+#include <string>
 #include <algorithm>
 
+#include "font8x8.h"
+#include "font6x8.h"
 #include "fb.hpp"
 
 uint16_t framebuffer[FB_HEIGHT * FB_WIDTH] = {0};
+int current_font = FONT_8x8;
+int char_space_h = 10;
+int char_space_v = 10;
 
 void put_pixel(int x, int y, uint16_t color) {
     if (x < FB_WIDTH && y < FB_HEIGHT && x >= 0 && y >= 0) {
@@ -26,8 +32,8 @@ void draw_vertical_line(int x, int y, int len, uint16_t color) {
 
 void draw_line_h(int x0, int y0, int x1, int y1, uint16_t color) {
     if (x0 > x1) {
-        x0,x1 = x1,x0;
-        y0,y1 = y1,y0;
+        std::swap(x0, x1);
+        std::swap(y0, y1);
     }
 
     int dx = x1 - x0;
@@ -53,8 +59,8 @@ void draw_line_h(int x0, int y0, int x1, int y1, uint16_t color) {
 
 void draw_line_v(int x0, int y0, int x1, int y1, uint16_t color) {
     if (y0 > y1) {
-        x0,x1 = x1,x0;
-        y0,y1 = y1,y0;
+        std::swap(x0, x1);
+        std::swap(y0, y1);
     }
 
     int dx = x1 - x0;
@@ -146,5 +152,71 @@ void draw_rectangle_fill(int x0, int y0, int x1, int y1, uint16_t color) {
     int min = std::min(y0, y1);
     for (int i = 0; i < lines; i++) {
         draw_horizontal_line(x0, (x1 - x0), min + i, color);
+    }
+}
+
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color) {
+    draw_line(x0, y0, x1, y1, color);
+    draw_line(x1, y1, x2, y2, color);
+    draw_line(x2, y2, x0, y0, color);
+}
+
+void draw_character(int x, int y, char character, uint16_t color) {
+    switch (current_font) {
+        case FONT_8x8:
+            for (int row = 0; row < 8; row++) {
+                unsigned char char_byte = console_font_8x8[((unsigned char)character * 8) + row];
+                for (int col = 0; col < 8; col++) {
+                    if (char_byte & (0x80 >> col)) {
+                        put_pixel(x + col, y + row, color);
+                    }
+                }
+            }
+            break;
+        case FONT_6x8:
+            for (int row = 0; row < 8; row++) {
+                unsigned char char_byte = console_font_6x8[((unsigned char)character * 8) + row];
+                for (int col = 0; col < 6; col++) {
+                    if (char_byte & (0x80 >> col)) {
+                        put_pixel(x + col, y + row, color);
+                    }
+                }
+            }
+            break;
+        default:
+            return;
+    }
+}
+
+void draw_string(int x, int y, std::string string, uint16_t color) {
+    int n = string.length();
+    int newx = x;
+    int newy = y;
+    for (int i = 0; i < n; i++) {
+        draw_character(newx, newy, string[i], color);
+        if ((newx + (char_space_h * 2)) > FB_WIDTH) {
+            newx = x;
+            newy += char_space_v;
+        } else {
+            newx += char_space_h;
+        }
+    }
+}
+
+void set_font(int font) {
+    switch (font) {
+        case FONT_8x8:
+            current_font = font;
+            char_space_h = 9;
+            char_space_v = 10;
+            break;
+        case FONT_6x8:
+            current_font = font;
+            char_space_h = 7;
+            char_space_v = 10;
+            break;
+        default:
+            current_font = FONT_8x8;
+            break;
     }
 }
