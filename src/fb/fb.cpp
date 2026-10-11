@@ -182,6 +182,60 @@ void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t colo
     draw_line(x2, y2, x0, y0, color);
 }
 
+void fill_flat_bottom_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color) {
+    float inv_slope1 = (float)(x1 - x0) / (float)(y1 - y0);
+    float inv_slope2 = (float)(x2 - x0) / (float)(y2 - y0);
+
+    float startx = x0;
+    float endx = x0;
+
+    for (int y = y0; y <= y2; y++) {
+        draw_line(startx, y, endx, y, color);
+        startx += inv_slope1;
+        endx += inv_slope2;
+    }
+}
+
+void fill_flat_top_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color) {
+    float inv_slope1 = (float)(x2 - x0) / (float)(y2 - y0);
+    float inv_slope2 = (float)(x2 - x1) / (float)(y2 - y1);
+
+    float startx = x2;
+    float endx = x2;
+
+    for (int y = y2; y >= y1; y--) {
+        draw_line(startx, y, endx, y, color);
+        startx -= inv_slope1;
+        endx -= inv_slope2;
+    }
+}
+
+void draw_triangle_fill(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color) {
+    if (y0 > y1) {
+        std::swap(y0, y1);
+        std::swap(x0, x1);
+    }
+    if (y1 > y2) {
+        std::swap(y1, y2);
+        std::swap(x1, x2);
+    }
+    if (y0 > y1) {
+        std::swap(y0, y1);
+        std::swap(x0, x1);
+    }
+
+    if (y1 == y2) {
+        fill_flat_bottom_triangle(x0, y0, x1, y1, x2, y2, color);
+    } else if (y0 == y1) {
+        fill_flat_top_triangle(x0, y0, x1, y1, x2, y2, color);
+    } else {
+        int mx = ((float)((x2 - x0) * (y1 - y0)) / (float)(y2 - y0)) + x0;
+        int my = y1;
+        fill_flat_bottom_triangle(x0, y0, x1, y1, mx, my, color);
+        fill_flat_top_triangle(x1, y1, mx, my, x2, y2, color);
+    }
+}
+
 void draw_character(int x, int y, char character, uint16_t color) {
     switch (current_font) {
         case FONT_8x8:
