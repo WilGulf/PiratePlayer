@@ -140,6 +140,27 @@ void draw_circle_fill(int cx, int cy, int r, uint16_t color) {
     }
 }
 
+void draw_circle_buffer(int cx, int cy, int r, uint16_t *buffer, int buffer_line_len, int image_rotation) {
+    int r2 = r * r;
+
+    float angle = image_rotation * M_PI / 180.0f;
+    float c = std::cos(angle);
+    float s = std::sin(angle);
+
+    for (int y = -r; y < r; y++) {
+        for (int x = -r; x < r; x++) {
+            if (x * x + y * y > r2) {
+                continue;
+            }
+
+            int sx = std::round(x * c + y * s) + r;
+            int sy = std::round(-x * s + y * c) + r;
+
+            put_pixel(cx + x, cy + y, buffer[sy * buffer_line_len + sx]);
+        }
+    }
+}
+
 void draw_rectangle(int x0, int y0, int x1, int y1, uint16_t color) {
     draw_horizontal_line(x0, (x1 - x0), y0, color);
     draw_vertical_line(x0, y0, (y1 - y0), color);
