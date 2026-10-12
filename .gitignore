@@ -2,3 +2,4 @@ installed.txt
 pirate-player
 output/
 test/
+*.hidden

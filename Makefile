@@ -1,3 +1,5 @@
+-include .config
+
 TARGET := pirate-player
 CC := clang
 CXX := clang++
@@ -5,27 +7,35 @@ CXX := clang++
 SRCDIR := src
 OUTDIR := output
 
-SDLFLAGS = $(shell sdl2-config --cflags)
-SDLLIBS = $(shell sdl2-config --libs)
-
 FLAGS := -Wall -Wextra -O2 -g -MMD -I$(SRCDIR)
-CFLAGS := $(FLAGS) -std=c20
+CFLAGS := $(FLAGS) -std=c23
 CXXFLAGS := $(FLAGS) -std=c++20
 
-CPPFLAGS := $(SDLFLAGS)
+CPPFLAGS := $(shell pkg-config --cflags libmpdclient)
 LDFLAGS := 
-LDLIBS := $(SDLLIBS)
+LDLIBS := $(shell pkg-config --libs libmpdclient)
 
-SRC_C := $(wildcard $(SRCDIR)/*.c) \
-	$(wildcard $(SRCDIR)/*/*.c) \
-	$(wildcard $(SRCDIR)/*/*/*.c)
+SRC_C := $(wildcard $(SRCDIR)/mpd/mpd.c)
 
-SRC_CXX := $(wildcard $(SRCDIR)/*.cpp) \
-	$(wildcard $(SRCDIR)/*/*.cpp) \
-	$(wildcard $(SRCDIR)/*/*/*.cpp)
+SRC_CXX := $(wildcard $(SRCDIR)/main.cpp) \
+	$(wildcard $(SRCDIR)/ui/*.cpp) \
+	$(wildcard $(SRCDIR)/fb/*.cpp) \
+	$(wildcard $(SRCDIR)/platform/*.cpp)
 
-OBJ_C := $(SRC_C:$(SRCDIR)/%.c=$(OUTDIR)/%.o)
-OBJ_CXX := $(SRC_CXX:$(SRCDIR)/%.cpp=$(OUTDIR)/%.o)
+ifeq ($(DESKTOP_SDL),y)
+	CFLAGS += -DDESKTOP_SDL
+	CPPFLAGS += -DDESKTOP_SDL $(shell sdl2-config --cflags)
+	LDLIBS += $(shell sdl2-config --libs)
+	SRC_CXX += $(SRCDIR)/platform/desktop/sdl.cpp
+else ifeq ($(PI_ST7789),y)
+	CPPFLAGS += -DPI_ST7789
+	SRC_CXX += $(SRCDIR)/platform/pi/st7789.cpp
+else
+	$(error Select DESKTOP_SDL=y or PI_ST7789=y)
+endif
+
+OBJ_C := $(patsubst $(SRCDIR)/%.c,$(OUTDIR)/%.o,$(SRC_C))
+OBJ_CXX := $(patsubst $(SRCDIR)/%.cpp,$(OUTDIR)/%.o,$(SRC_CXX))
 OBJS := $(OBJ_C) $(OBJ_CXX)
 
 DEPS := $(OBJS:.o=.d)

@@ -9,9 +9,11 @@ int platform_init(void);
 void platform_refresh(void);
 int platform_exit(void);
 
+#ifdef DESKTOP_SDL
 int sdl_init(void);
 void sdl_refresh(void);
 int sdl_exit(void);
+#endif
 
 #ifdef __cplusplus
 }
