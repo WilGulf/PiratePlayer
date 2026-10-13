@@ -37,3 +37,22 @@ int sdl_exit(void) {
     SDL_Quit();
     return 0;
 }
+
+int sdl_poll(void) {
+    SDL_Event event;
+    SDL_PollEvent(&event);
+    if (event.type == SDL_KEYDOWN) {
+        switch (event.key.keysym.sym) {
+            case SDLK_a:
+                return LEFT;
+            case SDLK_d:
+                return RIGHT;
+            case SDLK_SPACE:
+                return UP;
+            case SDLK_s:
+                return DOWN;
+        }
+    }
+
+    return 0;
+}

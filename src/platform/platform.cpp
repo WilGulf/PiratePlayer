@@ -23,3 +23,11 @@ int platform_exit(void) {
     return -1;
     #endif
 }
+
+int platform_poll(void) {
+    #ifdef DESKTOP_SDL
+    return sdl_poll();
+    #elif defined(PI_ST7789)
+    return -1;
+    #endif
+}

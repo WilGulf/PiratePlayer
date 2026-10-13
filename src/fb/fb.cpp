@@ -152,11 +152,15 @@ void draw_circle_buffer(int cx, int cy, int r, uint16_t *buffer, int buffer_line
             if (x * x + y * y > r2) {
                 continue;
             }
+            
+            if (image_rotation) {
+                int sx = std::round(x * c + y * s) + r;
+                int sy = std::round(-x * s + y * c) + r;
 
-            int sx = std::round(x * c + y * s) + r;
-            int sy = std::round(-x * s + y * c) + r;
-
-            put_pixel(cx + x, cy + y, buffer[sy * buffer_line_len + sx]);
+                put_pixel(cx + x, cy + y, buffer[sy * buffer_line_len + sx]);
+            } else {
+                put_pixel(cx + x, cy + y, buffer[(y + r) * buffer_line_len + (x + r)]);
+            }
         }
     }
 }
@@ -294,4 +298,8 @@ void set_font(int font) {
             current_font = FONT_8x8;
             break;
     }
+}
+
+void clear(void) {
+    std::memset(framebuffer, 0, sizeof(framebuffer));
 }
