@@ -1,0 +1,56 @@
+# PiratePlayer
+A small music player window on your screen.
+
+## What is PiratePlayer
+
+Pirate player is a music player interface that interracts with mpd. It plays local files in what ever format your music may be.
+
+## How to use PiratePlayer
+
+**REQUIREMENTS**: 
+- A system that either supports SDL applications (most systems) or a system using the "st7789 240x240" display.
+- A system with a running instance of mpd.
+
+If the system meets the requirements the executable will run and start up the interface. If not working correctly try launching it from a terminal that can display the error messages.
+
+**CONTROLS**:
+
+Keyboard 'A' / Hat 'A'** -- Scroll left/Play previous
+
+Keybard 'D' / Hat 'B' -- Scroll right/Skip
+
+Keyboard SPACE / Hat 'Y' -- Enter album/Toggle playing
+
+Keyboard BACKSPACE / Hat 'X' -- Go back
+
+## How it works
+
+At the depest level PiratePlayer uses its own framebuffer and graphics functions to write individual pixels to it. For playing the files all the actual audio work is done by mpd and PiratePlayer is just controlling mpd.
+
+## Installation
+
+### 1. Clone the source code
+```sh
+git clone https://github.com/WilGulf/PiratePlayer.git
+```
+### 2. Install required dependencies
+- SDL development headers
+- libmpdclient
+
+### 3. Update .config
+Depending on the target system open .config and perform the necessary changes. If you are not using a PI with hat as a target you should not need to do any changes.
+
+### 4. Compile
+```sh
+make
+```
+
+#### 5. Run the program
+Either do:
+```sh
+make test
+```
+or simply run the executable
+```sh
+./pirate-player
+```
