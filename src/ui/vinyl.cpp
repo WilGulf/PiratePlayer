@@ -64,7 +64,7 @@ void draw_vinyl(int rotation, std::string cover) {
         draw_circle(120, 120, VINYL_RADIUS - (i + 1) * GROOVE_SIZE, SPOTIFY_LIGHTGRAY);
     }
 
-    draw_circle_buffer(120, 120, IMAGE_RADIUS, image_buffer, IMAGE_RADIUS * 2, rotation);
+    draw_circle_buffer(120, 120, IMAGE_RADIUS, IMAGE_RADIUS, image_buffer, IMAGE_RADIUS * 2, rotation);
 
     draw_circle_fill(120, 120, 11, SPOTIFY_LIGHTGRAY);
     draw_circle_fill(120, 120, 8, SPOTIFY_GREEN);
@@ -99,7 +99,7 @@ void draw_static_vinyl(int cx, int cy, int r, std::string cover) {
     if (cover.empty()) {
         draw_circle_fill(cx, cy, rel_image_radius, 0);
     } else {
-        draw_circle_buffer(cx, cy, rel_image_radius, image_buffer, IMAGE_RADIUS * 2, 0);
+        draw_circle_buffer(cx, cy, rel_image_radius, IMAGE_RADIUS, image_buffer, IMAGE_RADIUS * 2, 0);
     }
 
     draw_circle_fill(cx, cy, std::round(11 * ratio), SPOTIFY_LIGHTGRAY);

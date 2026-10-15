@@ -131,19 +131,19 @@ int main() {
     while (1) {
         switch (platform_poll()) {
             case LEFT:
-                if (!animating) {
+                if (!animating && mode == MODE_LIBRARY) {
                     anim_go_left();
                     animating = true;
                 }
                 break;
             case RIGHT:
-                if (!animating) {
+                if (!animating && mode == MODE_LIBRARY) {
                     anim_go_right();
                     animating = true;
                 }
                 break;
             case UP:
-                if (!animating) {
+                if (!animating && mode == MODE_LIBRARY) {
                     anim_open();
                     animating = true;
                 }
@@ -180,6 +180,7 @@ int main() {
                 mode_library();
                 break;
         }
+        
         std::this_thread::sleep_for(std::chrono::milliseconds(25));
     }
 
