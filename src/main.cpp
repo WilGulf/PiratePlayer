@@ -36,7 +36,7 @@ std::filesystem::path get_png(std::filesystem::path string) {
     return copy;
 }
 
-std::unordered_set<std::string> extensions = {".mp3", ".m4a", ".ogg", ".wav"};
+std::unordered_set<std::string> extensions = {".mp2", ".mp3", ".mp4", ".m4a", ".ogg", ".wav", ".flac"};
 void reload_files(void) {
     if (!std::filesystem::exists(musicdir)) {
         return;

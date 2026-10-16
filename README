@@ -1,9 +1,22 @@
 # PiratePlayer
-A small music player window on your screen.
+A small music player window on your screen. 
+
+Named after the 'Pimoroni Pirate Audio Hat' which is the goal for PiratePlayer to have support for.
 
 ## What is PiratePlayer
 
 Pirate player is a music player interface that interracts with mpd. It plays local files in what ever format your music may be.
+
+Supported audio formats:
+- ".mp2"
+- ".mp3"
+- ".mp4"
+- ".m4a"
+- ".ogg"
+- ".wav"
+- ".flac"
+
+> **NOTE**: m4a is the only tested format but the newest mpd version should handle all the listed formats.
 
 ## How to use PiratePlayer
 
@@ -29,9 +42,11 @@ Keyboard BACKSPACE -- Go back/Refresh library
 
 ## How it works
 
-At the depest level PiratePlayer uses its own framebuffer and graphics functions to write individual pixels to it. For playing the files all the actual audio work is done by mpd and PiratePlayer is just controlling mpd.
+At the depest level PiratePlayer uses its own framebuffer and graphics functions to write individual pixels to it. For playing the files all the actual audio is handled by mpd and PiratePlayer is just controlling mpd.
 
 ## Installation
+
+If there is a binary for your system in the releases you can download it and head right to step 5 to test.
 
 ### 1. Clone the source code
 ```sh
@@ -40,17 +55,19 @@ git clone https://github.com/WilGulf/PiratePlayer.git
 ### 2. Install required dependencies
 - SDL development headers
 - libmpdclient
+- C and C++ compiler recommended( gcc, g++ )
+- Make
 
 ### 3. Update .config
-Depending on the target system open .config and perform the necessary changes. If you are not using a PI with hat as a target you should not need to do any changes.
+Currently the default config is the only supported one so you should not need any changes. Just ensure DESKTOP_SDL is set to 'y'.
 
 ### 4. Compile
 ```sh
 make
 ```
 
-#### 5. Run the program
-run the executable
+### 5. Run the program
+Run the executable
 ```sh
 ./pirate-player /path/to/music_directory
 ```
