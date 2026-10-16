@@ -193,11 +193,11 @@ void end_animation(void) {
         mode = MODE_PLAYER;
     } else if (curr_animation == ANIM_LEFT) {
         // ANIMATION WAS LEFT
-        get_next();
+        get_prev();
         load_current();
     } else if (curr_animation == ANIM_RIGHT) {
         // ANIMATION WAS RIGHT
-        get_prev();
+        get_next();
         load_current();
     }
 
