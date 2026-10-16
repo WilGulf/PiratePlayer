@@ -184,11 +184,13 @@ void end_animation(void) {
 
     if (curr_animation == ANIM_OPEN) {
         // ANIMATION WAS OPEN
-        mode = MODE_PLAYER;
+        playing_name = current[2].file.stem().string();
+        playing_cover = get_png(current[2].file).string();
         mpd_clear();
         mpd_add_pathfile(current[2].file.c_str());
         mpd_play();
         playing = true;
+        mode = MODE_PLAYER;
     } else if (curr_animation == ANIM_LEFT) {
         // ANIMATION WAS LEFT
         get_next();
