@@ -49,7 +49,7 @@ int sdl_poll(void) {
                 return RIGHT;
             case SDLK_SPACE:
                 return UP;
-            case SDLK_s:
+            case SDLK_BACKSPACE:
                 return DOWN;
         }
     }

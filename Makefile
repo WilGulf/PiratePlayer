@@ -20,7 +20,8 @@ SRC_C := $(wildcard $(SRCDIR)/mpd/mpd.c)
 SRC_CXX := $(wildcard $(SRCDIR)/main.cpp) \
 	$(wildcard $(SRCDIR)/ui/*.cpp) \
 	$(wildcard $(SRCDIR)/fb/*.cpp) \
-	$(wildcard $(SRCDIR)/platform/*.cpp)
+	$(wildcard $(SRCDIR)/platform/*.cpp) \
+	$(wildcard $(SRCDIR)/mpd/*.cpp)
 
 ifeq ($(DESKTOP_SDL),y)
 	CFLAGS += -DDESKTOP_SDL
@@ -59,7 +60,7 @@ $(OUTDIR):
 	mkdir -p $(OUTDIR)
 
 test: $(TARGET)
-	./$(TARGET)
+	./$(TARGET) ./test
 
 clean:
 	$(RM) -r $(OUTDIR) $(TARGET)

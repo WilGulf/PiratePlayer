@@ -8,20 +8,24 @@ Pirate player is a music player interface that interracts with mpd. It plays loc
 ## How to use PiratePlayer
 
 **REQUIREMENTS**: 
-- A system that either supports SDL applications (most systems) or a system using the "st7789 240x240" display.
+- A system that either supports SDL applications (most systems).
 - A system with a running instance of mpd.
 
 If the system meets the requirements the executable will run and start up the interface. If not working correctly try launching it from a terminal that can display the error messages.
 
+The program also requires a argument which is the path to the directory containing the music. Currently it doesn't support directories inside that music directory, the music directory should only contain media files with a optional .png with the same extension. 
+
+> **NOTE**: The display may appear pixelated. This is not a bug, the program is designed to later be ported to a 240x240 display hat.
+
 **CONTROLS**:
 
-Keyboard 'A' / Hat 'A'** -- Scroll left/Play previous
+Keyboard 'A' -- Scroll left
 
-Keybard 'D' / Hat 'B' -- Scroll right/Skip
+Keybard 'D' -- Scroll right
 
-Keyboard SPACE / Hat 'Y' -- Enter album/Toggle playing
+Keyboard SPACE -- Start file/Toggle playing
 
-Keyboard BACKSPACE / Hat 'X' -- Go back
+Keyboard BACKSPACE -- Go back/Refresh library
 
 ## How it works
 
@@ -46,11 +50,7 @@ make
 ```
 
 #### 5. Run the program
-Either do:
+run the executable
 ```sh
-make test
-```
-or simply run the executable
-```sh
-./pirate-player
+./pirate-player /path/to/music_directory
 ```

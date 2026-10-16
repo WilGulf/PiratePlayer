@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <math.h>
 #include <mpd/client.h>
+#include <mpd/status.h>
 
 #include "mpd.h"
 
@@ -31,8 +33,48 @@ void mpd_play(void) {
     }
 }
 
-void mpd_toggle_playing(bool play) {
+void mpd_set_playing(bool play) {
     if (!mpd_run_pause(connection, play)) {
         // ERROR
+    }
+}
+
+void mpd_clear(void) {
+    if (!mpd_run_clear(connection)) {
+        // ERROR
+    }
+}
+
+int mpd_get_progress(void) {
+    struct mpd_status *status = mpd_run_status(connection);
+    if (!status) {
+        return 0;
+    }
+    int elapsed = mpd_status_get_elapsed_time(status);
+    int total = mpd_status_get_total_time(status);
+
+    mpd_status_free(status);
+
+    if (total > 0) {
+        float progress = (float)elapsed / total;
+        return round(progress * 100);
+    } else {
+        return 0;
+    }
+}
+
+bool mpd_get_playing(void) {
+    struct mpd_status *status = mpd_run_status(connection);
+    if (!status) {
+        return false;
+    }
+
+    enum mpd_state state = mpd_status_get_state(status);
+    if (state == MPD_STATE_PLAY || state == MPD_STATE_PAUSE) {
+        mpd_status_free(status);
+        return true;
+    } else {
+        mpd_status_free(status);
+        return false;
     }
 }

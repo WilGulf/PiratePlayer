@@ -21,6 +21,7 @@ void draw_title(std::string title) {
     draw_string(60, 20, last_title, 0xFFFF);
 }
 
+bool last_state = false;
 int last_progress = 0;
 void draw_controls(bool playing, int progress) {
     #define PAUSE_SIZE 15
@@ -31,19 +32,23 @@ void draw_controls(bool playing, int progress) {
     #define BAR_SIZE_HALF (BAR_SIZE / 2)
     #define BAR_THICKNESS 4
     #define BAR_THICKNESS_HALF (BAR_THICKNESS / 2)
-    
-    if (progress != last_progress || playing) {
-        draw_rectangle_fill(
-            120 - BAR_SIZE_HALF, CONTROLS_CENTER_Y - BAR_THICKNESS_HALF,
-            120 + BAR_SIZE_HALF, CONTROLS_CENTER_Y + BAR_THICKNESS_HALF,
-            SPOTIFY_WHITE
-        );
-        draw_rectangle_fill(
-            120 - BAR_SIZE_HALF, CONTROLS_CENTER_Y - BAR_THICKNESS_HALF,
-            (120 - BAR_SIZE_HALF) + (BAR_SIZE * progress / 100), CONTROLS_CENTER_Y + BAR_THICKNESS_HALF,
-            SPOTIFY_GREEN
-        );
+
+    if (playing != last_state) {
+        clear();
     }
+    last_state = playing;
+    
+    draw_rectangle_fill(
+        120 - BAR_SIZE_HALF, CONTROLS_CENTER_Y - BAR_THICKNESS_HALF,
+        120 + BAR_SIZE_HALF, CONTROLS_CENTER_Y + BAR_THICKNESS_HALF,
+        SPOTIFY_WHITE
+    );
+    draw_rectangle_fill(
+        120 - BAR_SIZE_HALF, CONTROLS_CENTER_Y - BAR_THICKNESS_HALF,
+        (120 - BAR_SIZE_HALF) + (BAR_SIZE * progress / 100), CONTROLS_CENTER_Y + BAR_THICKNESS_HALF,
+        SPOTIFY_GREEN
+    );
+    
     last_progress = progress;
 
     if (playing) {
