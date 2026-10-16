@@ -22,7 +22,7 @@ Supported audio formats:
 
 **REQUIREMENTS**: 
 - A system that either supports SDL applications (most systems).
-- A system with a running instance of mpd.
+- A system with a running instance of mpd. Ensure it is running with a appropriate config.
 
 If the system meets the requirements the executable will run and start up the interface. If not working correctly try launching it from a terminal that can display the error messages.
 
