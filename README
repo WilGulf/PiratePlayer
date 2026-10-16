@@ -71,3 +71,9 @@ Run the executable
 ```sh
 ./pirate-player /path/to/music_directory
 ```
+
+## Acknowledgements
+**Uses:**
+
+- stb_image.h for png to pixel buffer. (http://nothings.org/stb)
+- font8x8.h & font6x8.h as fonts. (https://github.com/idispatch/raster-fonts)
