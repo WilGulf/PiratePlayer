@@ -3,6 +3,8 @@ A small music player window on your screen.
 
 Named after the 'Pimoroni Pirate Audio Hat' which is the goal for PiratePlayer to have support for.
 
+![Showcase](Assets/Preview.png)
+
 ## What is PiratePlayer
 
 Pirate player is a music player interface that interracts with mpd. It plays local files in what ever format your music may be.
