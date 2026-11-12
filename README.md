@@ -48,31 +48,95 @@ At the depest level PiratePlayer uses its own framebuffer and graphics functions
 
 ## Installation
 
-If there is a binary for your system in the releases you can download it and head right to step 5 to test.
+### Option A: Download a prebuilt binary
+If there is a binary for your system on the [Releases](https://github.com/WilGulf/PiratePlayer/releases) page, download it and then make it executable ('chmod +x pirate-player' on Linux/macOS). Then continue with setting up MPD.
 
-### 1. Clone the source code
+### Option B: Build from source
+
+#### 1. Install dependencies
+
+PiratePlayer needs a C/C++ compiler, 'make', 'git', the SDL2 developent files, and 'libmpdclient'. You also need 'mpd' itself, which does the actual audio playback.
+
+**Debian / Ubuntu / Raspberry Pi OS**
+```sh
+sudo apt update
+sudo apt install git build-essential libsdl2-dev libmpdclient-dev mpd
+```
+
+**Fedora**
+```sh
+sudo dnf install git gcc gcc-c++ make SDL2-devel libmpdclient-devel mpd
+```
+
+**Arch / Manjaro**
+```sh
+sudo pacman -S git base-devel sdl2 libmpdclient mpd
+```
+
+**macOS** (requires [Homebrew](https://brew.sh))
+```sh
+xcode-select --install
+brew install sdl2 libmpdclient mpd pkg-config
+```
+
+#### 2. Clone the source code
 ```sh
 git clone https://github.com/WilGulf/PiratePlayer.git
+cd PiratePlayer
 ```
-### 2. Install required dependencies
-- SDL development headers
-- libmpdclient
-- C and C++ compiler recommended( gcc, g++ )
-- Make
 
-### 3. Update .config
-Currently the default config is the only supported one so you should not need any changes. Just ensure DESKTOP_SDL is set to 'y'.
+#### 3. Check build config
+The default `.config` is the only supported one, so you shouldn't need to change anything. Just confirm it contains:
+```
+DESKTOP_SDL=y
+```
 
 ### 4. Compile
 ```sh
 make
 ```
 
-### 5. Run the program
-Run the executable
+On success, the 'pirate-player' executable appears in the project folder.
+
+### Set up mpd
+
+PiratePlayer only *controls* mpd, so mpd must be running before you start it. And the config should point mpd to the directory containing your music.
+  1. Config to place in '~/.config/mpd/mpd.conf', and remove the audio_output you don't need.
+     ```
+     music_directory "/path/to/music_directory"
+
+     bind_to_address "127.0.0.1"
+     port "6600"
+
+     auto_update "yes"
+
+     # macOS
+     audio_output {
+       type "osx"
+       name "Mac CoreAudio"
+       mixer_type "software"
+     }
+
+     # General Linux
+     audio_output {
+       type "pulse"
+       name "Default"
+     }
+     ```
+  2. Start mpd
+     ```sh
+     mpd
+     ```
+     Ensure it is running with this:
+     ```sh
+     mpc status
+     ```
+
+### Run
 ```sh
 ./pirate-player /path/to/music_directory
 ```
+Use the same path you set as 'music_directory' in the mpd config.
 
 ## Acknowledgements
 **Uses:**
