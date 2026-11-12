@@ -2,7 +2,7 @@
 
 TARGET := pirate-player
 CC := gcc
-CXX := gcc++
+CXX := g++
 
 SRCDIR := src
 OUTDIR := output
