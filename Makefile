@@ -1,8 +1,8 @@
 -include .config
 
 TARGET := pirate-player
-CC := clang
-CXX := clang++
+CC := gcc
+CXX := gcc++
 
 SRCDIR := src
 OUTDIR := output
